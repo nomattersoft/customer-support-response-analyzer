@@ -12,7 +12,7 @@ public class Config {
 
     private static SimpleDateFormat dateFormat;
 
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
 
     public static void loadProperties() {
@@ -27,6 +27,10 @@ public class Config {
 
     public static String getProperty(String key) {
         return properties.getProperty(key);
+    }
+
+    public static int getIntProperty(String key) {
+        return Integer.parseInt(getProperty(key));
     }
 
     public static Properties getProperties() {
