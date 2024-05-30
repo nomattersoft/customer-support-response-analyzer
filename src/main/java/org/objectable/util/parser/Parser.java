@@ -5,7 +5,7 @@ import org.objectable.model.model.*;
 import org.objectable.model.model.record.QueryRecord;
 import org.objectable.model.model.record.WaitingTimelineRecord;
 import org.objectable.util.FileHandler;
-import org.objectable.util.validator.RecordValidator;
+import org.objectable.util.validator.Validator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class Parser {
     public static QueryRecord parseQueryRecord(String recordLine, Integer recordIndex) throws ParseException {
         List<String> recordLineParts = Arrays.stream(recordLine.split(" ")).toList();
         Date dateTo = null;
-        if (RecordValidator.isDateRange(recordLineParts.get(Config.getIntProperty("DATE_PART_INDEX")))) {
+        if (Validator.isDateRange(recordLineParts.get(Config.getIntProperty("DATE_PART_INDEX")))) {
             dateTo = parseDate(recordLineParts
                         .get(Config.getIntProperty("DATE_PART_INDEX"))
                         .split(Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL"))[1]);
@@ -59,7 +59,7 @@ public class Parser {
 
     public static Service parseService(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
-        if (RecordValidator.isServiceVariationPresent(recordLinePart)) {
+        if (Validator.isServiceVariationPresent(recordLinePart)) {
             String[] splitLinePart = recordLinePart.split("\\.");
             return new Service(
                     Integer.parseInt(splitLinePart[0]),
@@ -70,13 +70,13 @@ public class Parser {
 
     public static QuestionType parseQuestion(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
-        if (RecordValidator.isQuestionTypeSubcategoryPresent(recordLinePart)) {
+        if (Validator.isQuestionTypeSubcategoryPresent(recordLinePart)) {
             String[] splitLinePart = recordLinePart.split("\\.");
             return new QuestionType(
                     Integer.parseInt(splitLinePart[0]),
                     new QuestionCategory(Integer.parseInt(splitLinePart[1]),
                     new QuestionSubcategory(Integer.parseInt(splitLinePart[2]))));
-        } else if (RecordValidator.isQuestionTypeCategoryPresent(recordLinePart)) {
+        } else if (Validator.isQuestionTypeCategoryPresent(recordLinePart)) {
             String[] splitLinePart = recordLinePart.split("\\.");
             return new QuestionType(
                     Integer.parseInt(splitLinePart[0]),

@@ -4,7 +4,7 @@ import org.objectable.configuration.Config;
 
 import java.util.regex.Pattern;
 
-public class RecordValidator {
+public class Validator {
 
 
     public static boolean isRecordValid(String recordString) {
