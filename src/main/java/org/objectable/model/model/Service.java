@@ -40,7 +40,7 @@ public class Service extends Model {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Service service = (Service) o;
-        return Objects.equals(variation, service.variation);
+        return service.variation == null || Objects.equals(variation, service.variation);
     }
 
     @Override

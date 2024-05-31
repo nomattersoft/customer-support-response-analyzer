@@ -31,22 +31,24 @@ public class QuestionCategory extends Model {
         this.subcategory = subcategory;
     }
 
-    /**
-     * Common methods
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        QuestionCategory that = (QuestionCategory) o;
-        return Objects.equals(subcategory, that.subcategory);
+        QuestionCategory questionCategory = (QuestionCategory) o;
+        return questionCategory.subcategory == null || Objects.equals(subcategory, questionCategory.subcategory);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), subcategory);
     }
+
+    /**
+     * Common methods
+     */
+
 
     @Override
     public String toString() {

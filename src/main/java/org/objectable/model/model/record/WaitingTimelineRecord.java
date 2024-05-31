@@ -5,19 +5,19 @@ import org.objectable.model.model.QuestionType;
 import org.objectable.model.model.Record;
 import org.objectable.model.model.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class WaitingTimelineRecord extends Record {
 
-    private Date date;
+    private LocalDate date;
 
     private Integer waitingTime;
 
     /**
      * Constructors
      */
-    public WaitingTimelineRecord(Integer id, String symbol, Service service, QuestionType questionType, String responseType, Date date, Integer waitingTime) {
+    public WaitingTimelineRecord(Integer id, String symbol, Service service, QuestionType questionType, String responseType, LocalDate date, Integer waitingTime) {
         super(id, symbol, service, questionType, responseType);
         this.date = date;
         this.waitingTime = waitingTime;
@@ -26,11 +26,11 @@ public class WaitingTimelineRecord extends Record {
     /**
      * Getters & Setters
      */
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -46,12 +46,18 @@ public class WaitingTimelineRecord extends Record {
      * Check if this Waiting Timeline Record matches given Query Record
      */
     public boolean matches(QueryRecord queryRecord) {
-        return this.symbol.equals(queryRecord.getSymbol()) &&
-                (queryRecord.getService() == null || this.service.equals(queryRecord.getService())) &&
+        return (queryRecord.getService() == null || this.service.equals(queryRecord.getService())) &&
                 (queryRecord.getQuestionType() == null || this.questionType.equals(queryRecord.getQuestionType())) &&
                 this.responseType.equals(queryRecord.getResponseType()) &&
-                this.date.after(queryRecord.getDateFrom()) &&
-                (queryRecord.getDateTo() == null || this.date.before(queryRecord.getDateTo()));
+                dateMatchesInclusively(queryRecord.getDateFrom(), queryRecord.getDateTo());
+    }
+
+    public boolean dateMatchesInclusively(LocalDate dateFrom, LocalDate dateTo) {
+        return dateTo == null ? this.date.isEqual(dateFrom) : !this.date.isAfter(dateTo) && !this.date.isBefore(dateFrom);
+    }
+
+    public boolean dateMatchesExclusively(LocalDate dateFrom, LocalDate dateTo) {
+        return dateTo == null ? this.date.isEqual(dateFrom) : !this.date.isAfter(dateTo) && !this.date.isBefore(dateFrom);
     }
 
     /**

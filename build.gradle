@@ -2,11 +2,23 @@ plugins {
     id 'java'
 }
 
+
 group = 'org.objectable'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 repositories {
     mavenCentral()
+}
+
+jar.archiveBaseName = 'support-response-analyzer'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.objectable.CustomerSupportResponseAnalyzer'
+    }
+    from {
+        configurations.runtimeClasspath.collect {it.isDirectory ? it : zipTree(it)}
+    }
 }
 
 dependencies {

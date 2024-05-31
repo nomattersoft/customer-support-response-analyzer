@@ -4,25 +4,16 @@ import org.objectable.configuration.Config;
 import org.objectable.model.model.*;
 import org.objectable.model.model.record.QueryRecord;
 import org.objectable.model.model.record.WaitingTimelineRecord;
-import org.objectable.util.FileHandler;
 import org.objectable.util.validator.Validator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Parser {
 
-
-    public static List<String> parseList(String recordsFileName) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(FileHandler.getFileInputStream(recordsFileName)));
-        return reader.lines().collect(Collectors.toList());
-    }
 
     public static WaitingTimelineRecord parseWaitingTimelineRecord(String recordLine, Integer recordIndex) throws ParseException {
         List<String> recordLineParts = Arrays.stream(recordLine.split(" ")).toList();
@@ -36,15 +27,16 @@ public class Parser {
                 Integer.parseInt(recordLineParts.get(Config.getIntProperty("TIME_PART_INDEX"))));
     }
 
+
     public static QueryRecord parseQueryRecord(String recordLine, Integer recordIndex) throws ParseException {
         List<String> recordLineParts = Arrays.stream(recordLine.split(" ")).toList();
-        Date dateTo = null;
+        LocalDate dateTo = null;
         if (Validator.isDateRange(recordLineParts.get(Config.getIntProperty("DATE_PART_INDEX")))) {
             dateTo = parseDate(recordLineParts
                         .get(Config.getIntProperty("DATE_PART_INDEX"))
                         .split(Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL"))[1]);
         }
-        Date dateFrom = parseDate(recordLineParts
+        LocalDate dateFrom = parseDate(recordLineParts
                             .get(Config.getIntProperty("DATE_PART_INDEX"))
                             .split(Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL"))[0]);
         return new QueryRecord(
@@ -57,6 +49,7 @@ public class Parser {
                 dateTo);
     }
 
+
     public static Service parseService(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
         if (Validator.isServiceVariationPresent(recordLinePart)) {
@@ -67,6 +60,7 @@ public class Parser {
         }
         return new Service(Integer.parseInt(recordLinePart));
     }
+
 
     public static QuestionType parseQuestion(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
@@ -85,7 +79,9 @@ public class Parser {
         return new QuestionType(Integer.parseInt(recordLinePart));
     }
 
-    public static Date parseDate(String recordLinePart) throws ParseException {
-        return Config.getDateFormat().parse(recordLinePart);
+
+    public static LocalDate parseDate(String recordLinePart) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Config.getProperty("DATE_FORMAT_PATTERN"));
+        return LocalDate.parse(recordLinePart, formatter);
     }
 }

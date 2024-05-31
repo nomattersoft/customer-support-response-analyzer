@@ -2,6 +2,8 @@ package org.objectable.util.validator;
 
 import org.objectable.configuration.Config;
 
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -52,5 +54,14 @@ public class Validator {
                 .compile(Config.getProperty(patternPropertyName))
                 .matcher(recordPart.trim())
                 .matches();
+    }
+
+    public static boolean isValidPath(String string) {
+        try {
+            Paths.get(string);
+        } catch (InvalidPathException | NullPointerException e) {
+            return false;
+        }
+        return true;
     }
 }

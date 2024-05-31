@@ -5,18 +5,19 @@ import org.objectable.model.model.QuestionType;
 import org.objectable.model.model.Record;
 import org.objectable.model.model.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
 public class QueryRecord extends Record {
 
-    private Date dateFrom;
-    private Date dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
 
     /**
      * Constructors
      */
-    public QueryRecord(Integer id, String symbol, Service service, QuestionType questionType, String responseType, Date dateFrom, Date dateTo) {
+    public QueryRecord(Integer id, String symbol, Service service, QuestionType questionType, String responseType, LocalDate dateFrom, LocalDate dateTo) {
         super(id, symbol, service, questionType, responseType);
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -25,19 +26,19 @@ public class QueryRecord extends Record {
     /**
      * Getters & Setters
      */
-    public Date getDateFrom() {
+    public LocalDate getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(LocalDate dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public LocalDate getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
     }
 

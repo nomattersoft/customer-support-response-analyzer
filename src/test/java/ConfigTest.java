@@ -18,6 +18,6 @@ public class ConfigTest {
 
     @Test
     void getPropertyTest() {
-        assertEquals("test-records-list.txt", Config.getProperty("TEST_RECORDS_FILENAME"));
+        assertEquals("test-records.txt", Config.getProperty("TEST_RECORDS_FILENAME"));
     }
 }

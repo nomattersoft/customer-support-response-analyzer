@@ -17,7 +17,7 @@ public class RecordsListAnalyzerTest {
     }
 
     @Test
-    void analyzeTest() {
+    void analyzeListTest() {
         List<String> records = Arrays.asList(
                 "C 1.1 8.15.1 P 15.10.2012 83",
                 "C 1 10.1 P 01.12.2012 65",
