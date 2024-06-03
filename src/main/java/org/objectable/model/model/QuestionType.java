@@ -31,6 +31,20 @@ public class QuestionType extends Model {
         this.questionCategory = questionCategory;
     }
 
+    /**
+     * Checks if this question type  matches given query records question type
+     */
+    @Override
+    public boolean matches(Model queryModel) {
+        QuestionType queryQuestionType = (QuestionType) queryModel;
+        return queryModel == null ||
+                (super.matches(queryQuestionType) &&
+                (getQuestionCategory() != null ? getQuestionCategory().matches(queryQuestionType.getQuestionCategory()) : getQuestionCategory() == queryQuestionType.getQuestionCategory()));
+    }
+
+    /**
+     * Common methods
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,13 +59,8 @@ public class QuestionType extends Model {
         return Objects.hash(super.hashCode(), questionCategory);
     }
 
-    /**
-     * Common methods
-     */
-
-
     @Override
     public String toString() {
-        return questionCategory != null ? String.format("%s.%s", super.toString(), questionCategory.toString()) : super.toString();
+        return String.format("%s", questionCategory != null ? super.toString() + "." + questionCategory.toString() : super.toString());
     }
 }

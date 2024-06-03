@@ -6,10 +6,12 @@ import org.objectable.model.model.Record;
 import org.objectable.model.model.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class QueryRecord extends Record {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Config.getProperty("DATE_FORMAT_LOGGER_PATTERN"));
 
     private LocalDate dateFrom;
     private LocalDate dateTo;
@@ -66,8 +68,8 @@ public class QueryRecord extends Record {
                 service == null ? Config.getProperty("ID_WILDCARD_SYMBOL") : service.toString(),
                 questionType == null ? Config.getProperty("ID_WILDCARD_SYMBOL") : questionType.toString(),
                 responseType,
-                Config.getDateFormat().format(dateFrom),
-                Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL") + (dateTo != null ? Config.getDateFormat().format(dateTo) : "")
+                formatter.format(dateFrom),
+                (dateTo != null ? Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL") +  formatter.format(dateTo) : "")
         );
     }
 }

@@ -12,10 +12,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
-public class Parser {
+public class RecordParser {
 
 
-    public static WaitingTimelineRecord parseWaitingTimelineRecord(String recordLine, Integer recordIndex) throws ParseException {
+    /**
+     * Parsing methods
+     */
+    public WaitingTimelineRecord parseWaitingTimelineRecord(String recordLine, Integer recordIndex) throws ParseException {
         List<String> recordLineParts = Arrays.stream(recordLine.split(" ")).toList();
         return new WaitingTimelineRecord(
                 recordIndex,
@@ -28,10 +31,10 @@ public class Parser {
     }
 
 
-    public static QueryRecord parseQueryRecord(String recordLine, Integer recordIndex) throws ParseException {
+    public QueryRecord parseQueryRecord(String recordLine, Integer recordIndex) throws ParseException {
         List<String> recordLineParts = Arrays.stream(recordLine.split(" ")).toList();
         LocalDate dateTo = null;
-        if (Validator.isDateRange(recordLineParts.get(Config.getIntProperty("DATE_PART_INDEX")))) {
+        if (Validator.isValidDateRange(recordLineParts.get(Config.getIntProperty("DATE_PART_INDEX")))) {
             dateTo = parseDate(recordLineParts
                         .get(Config.getIntProperty("DATE_PART_INDEX"))
                         .split(Config.getProperty("DATE_RANGE_SPLITTER_SYMBOL"))[1]);
@@ -50,7 +53,7 @@ public class Parser {
     }
 
 
-    public static Service parseService(String recordLinePart) {
+    public Service parseService(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
         if (Validator.isServiceVariationPresent(recordLinePart)) {
             String[] splitLinePart = recordLinePart.split("\\.");
@@ -62,7 +65,7 @@ public class Parser {
     }
 
 
-    public static QuestionType parseQuestion(String recordLinePart) {
+    public QuestionType parseQuestion(String recordLinePart) {
         if (recordLinePart.equals(Config.getProperty("ID_WILDCARD_SYMBOL"))) return null;
         if (Validator.isQuestionTypeSubcategoryPresent(recordLinePart)) {
             String[] splitLinePart = recordLinePart.split("\\.");
@@ -80,7 +83,7 @@ public class Parser {
     }
 
 
-    public static LocalDate parseDate(String recordLinePart) {
+    public LocalDate parseDate(String recordLinePart) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Config.getProperty("DATE_FORMAT_PATTERN"));
         return LocalDate.parse(recordLinePart, formatter);
     }

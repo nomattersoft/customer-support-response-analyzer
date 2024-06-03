@@ -1,28 +1,26 @@
 package org.objectable;
 
 import org.objectable.configuration.Config;
-import org.objectable.util.Logger;
-import org.objectable.util.RecordsListAnalyzer;
-import org.objectable.util.validator.Validator;
+import org.objectable.service.AnalyzerService;
+import org.objectable.util.logging.Logger;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Optional;
 
 public class CustomerSupportResponseAnalyzer {
 
+    private static final AnalyzerService analyzerService = new AnalyzerService();
+
 
     public static void main(String[] args) {
+        Config.loadProperties();
         Logger.info("START");
-                Config.loadProperties();
-        Path filePath = Paths.get(System.getProperty("user.dir"), Config.getProperty("RECORDS_DIRECTORY"), Config.getProperty("RECORDS_FILENAME"));
-        if (args.length > 0 && Validator.isValidPath(args[0])) {
-            filePath = Paths.get(args[0]);
-            Config.setProperty("RECORDS_FILENAME", filePath.toAbsolutePath().toString());
+        Optional<String> optionalPathArgument = Optional.empty();
+        if (args.length > 0) {
+            optionalPathArgument = Optional.of(args[0]);
         }
-        RecordsListAnalyzer.analyzeFile(filePath);
+        analyzerService.analyze(optionalPathArgument);
         Logger.info("FINISH");
     }
-
 
     public static void terminate(String message) {
         Logger.error(message);

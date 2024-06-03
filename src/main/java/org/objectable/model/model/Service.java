@@ -32,6 +32,17 @@ public class Service extends Model {
     }
 
     /**
+     * Check if this service matches given query record
+     */
+    @Override
+    public boolean matches(Model queryModel) {
+        Service queryService = (Service) queryModel;
+        return queryService == null ||
+                (super.matches(queryModel) &&
+                (getVariation() != null ? getVariation().matches(queryService.getVariation()) : getVariation() == queryService.getVariation()));
+    }
+
+    /**
      * Common methods
      */
     @Override

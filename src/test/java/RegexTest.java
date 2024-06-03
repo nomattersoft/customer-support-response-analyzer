@@ -16,7 +16,7 @@ public class RegexTest {
 
     @Test
     void waitingTimelineRecordPatternTest() {
-        String record = "C 1.1 8.15.1 P 15.10.2012 83";
+        String record = "C 1.1 8.15.1 P 15.12.2012 83";
         assertTrue(Pattern
                 .compile(Config.getProperty("WAITING_TIMELINE_RECORD_PATTERN.regexp"))
                 .matcher(record)
@@ -25,7 +25,7 @@ public class RegexTest {
 
     @Test
     void queryRecordPatternTest() {
-        String record = "D 3 10 P 01.12.2012-20.11.2013";
+        String record = "D * * P 01.12.2012-20.11.2013";
         assertTrue(Pattern
                 .compile(Config.getProperty("QUERY_RECORD_PATTERN.regexp"))
                 .matcher(record)
@@ -73,6 +73,24 @@ public class RegexTest {
         String record = "P";
         assertTrue(Pattern
                 .compile(Config.getProperty("RESPONSE_TYPE_SYMBOL_PATTERN.regexp"))
+                .matcher(record)
+                .matches());
+    }
+
+    @Test
+    void datePatternTest() {
+        String record = "21.12.2012";
+        assertTrue(Pattern
+                .compile(Config.getProperty("DATE_FORMAT_PATTERN.regexp"))
+                .matcher(record)
+                .matches());
+    }
+
+    @Test
+    void dateRangePatternTest() {
+        String record = "8.10.2012-20.11.2012";
+        assertTrue(Pattern
+                .compile(Config.getProperty("DATE_RANGE_FORMAT_PATTERN.regexp"))
                 .matcher(record)
                 .matches());
     }

@@ -31,6 +31,20 @@ public class QuestionCategory extends Model {
         this.subcategory = subcategory;
     }
 
+    /**
+     * Checks if this question category matches given query question category
+     */
+    @Override
+    public boolean matches(Model queryModel) {
+        QuestionCategory queryCategory = (QuestionCategory) queryModel;
+        return queryModel == null ||
+                (super.matches(queryCategory) &&
+                (getSubcategory() != null ? getSubcategory().matches(queryCategory.getSubcategory()) : getSubcategory() == queryCategory.getSubcategory()));
+    }
+
+    /**
+     * Common methods
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,11 +58,6 @@ public class QuestionCategory extends Model {
     public int hashCode() {
         return Objects.hash(super.hashCode(), subcategory);
     }
-
-    /**
-     * Common methods
-     */
-
 
     @Override
     public String toString() {

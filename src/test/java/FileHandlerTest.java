@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.objectable.configuration.Config;
-import org.objectable.util.FileHandler;
+import org.objectable.util.handler.FileHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class FileHandlerTest {
 
+    private final FileHandler fileHandler = new FileHandler();
+
 
     @BeforeAll
     static void loadPropertiesTest() {
@@ -21,14 +23,14 @@ public class FileHandlerTest {
 
     @Test
     void readFileAsStreamTest() throws IOException {
-        assertInstanceOf(FileInputStream.class, FileHandler.getFileAsStream(Paths.get(
+        assertInstanceOf(FileInputStream.class, fileHandler.getFileAsStream(Paths.get(
                 Config.getProperty("TEST_RECORDS_DIRECTORY"),
                 Config.getProperty("TEST_RECORDS_FILENAME")).toString()));
     }
 
     @Test
     void readLinesTest() {
-        assertDoesNotThrow(() -> FileHandler.readLines(Paths.get(
+        assertDoesNotThrow(() -> fileHandler.readLines(Paths.get(
                 System.getProperty("user.dir"),
                 Config.getProperty("TEST_RECORDS_DIRECTORY"),
                 Config.getProperty("TEST_RECORDS_FILENAME"))));

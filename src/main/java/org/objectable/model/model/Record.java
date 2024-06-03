@@ -7,11 +7,8 @@ import java.util.Objects;
 public class Record extends Model {
 
     protected String symbol;
-
     protected Service service;
-
     protected QuestionType questionType;
-
     protected String responseType;
 
     /**

@@ -10,7 +10,7 @@ public class Model {
      * Constructors
      */
     public Model(Integer id) {
-        this.id = id;
+        this.id = Objects.requireNonNull(id);
     }
 
     /**
@@ -22,6 +22,13 @@ public class Model {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * Check if this model matches given query model
+     */
+    public boolean matches(Model queryModel) {
+        return queryModel.getClass() == getClass() && queryModel.getId().equals(getId());
     }
 
     /**

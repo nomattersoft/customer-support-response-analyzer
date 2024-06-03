@@ -10,4 +10,12 @@ public class ServiceVariation extends Model {
     public ServiceVariation(Integer id) {
         super(id);
     }
+
+    /**
+     * Check if this service variation matches given query service variation
+     */
+    @Override
+    public boolean matches(Model queryModel) {
+        return queryModel == null || super.matches(queryModel);
+    }
 }
